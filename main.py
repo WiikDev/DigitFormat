@@ -1,8 +1,11 @@
 import requests
 import datetime
+import json
+from win10toast import ToastNotifier
 
 token = ""
 signature = ""
+idUtilisateur = ""
 
 def postRequest(token, startTime, endTime, slot):
 
@@ -26,7 +29,7 @@ def postRequest(token, startTime, endTime, slot):
             'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
             'Accept-Encoding': 'gzip, deflate',
             'Content-Length': '22420'}
-    data = {"operationName" : "sign_one_attendance",
+    data = json.dumps({"operationName" : "sign_one_attendance",
     "query" : "mutation sign_one_attendance($id: ID!, $date: TrainingSessionDateInput, $signature: String!, $on_behalf: ID) {\n  sign_one_attendance(id: $id, date: $date, signature: $signature, on_behalf: $on_behalf)\n}\n",
     "variables" : {
     "date" : {
@@ -35,11 +38,19 @@ def postRequest(token, startTime, endTime, slot):
             "slot" : slot,
             "start_time" : startTime
             },
-    "id" : "588754",
+    "id" : idUtilisateur,
     "on_behalf" : None,
-    "signature" : signature}}
+    "signature" : signature}})
     results = requests.post(url=url, data=data, headers=headers)
-    print(str(results))
+    if(results.status_code == 200):
+        toaster.show_toast("Bot DigiFormat","L'émargement a bien été signé", None, 4)
+    else:
+        toaster.show_toast("Bot DigiFormat","Echec de la signature", None, 4)
+
+
+
+# DEBUT DU SCRIPT
+toaster = ToastNotifier()
 
 # Date du jour
 heure = int(str(datetime.datetime.now())[11:13])
@@ -47,8 +58,11 @@ if(heure < 14):
     startTime = "09:00:00"
     endTime = "12:30:00"
     slot = "morning"
+    toaster.show_toast("Bot DigiFormat","Lancement du bot du matin", None, 2)
 else:
     startTime = "14:00:00"
     endTime = "17:30:00"
     slot = "afternoon"
+    toaster.show_toast("Bot DigiFormat","Lancement du bot de l'après-midi", None, 2)
+
 postRequest(token, startTime, endTime, slot)
