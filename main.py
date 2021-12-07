@@ -69,6 +69,4 @@ else:
     endTime = "17:30:00"
     slot = "afternoon"
 
-notification.send()
-
 postRequest(token, startTime, endTime, slot)
