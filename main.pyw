@@ -10,7 +10,6 @@ def postRequest(token, startTime, endTime, slot):
     # Date du jour
     date = str(datetime.datetime.now())[0:10]
 
-
     url = "https://app.digiforma.com/api/v1/graphql"
     headers = {'Host': 'app.digiforma.com', 
             'Connection': 'keep-alive', 
@@ -45,9 +44,7 @@ def postRequest(token, startTime, endTime, slot):
         notification.message = "L'émargement a bien été signé"
     else:
         notification.message = "Echec de la signature"
-
     notification.send()
-
 
 
 # DEBUT DU SCRIPT
@@ -66,4 +63,5 @@ else:
     endTime = "17:30:00"
     slot = "afternoon"
 
+# Requête POST
 postRequest(cred.token, startTime, endTime, slot)
