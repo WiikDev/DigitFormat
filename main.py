@@ -63,4 +63,4 @@ else:
     slot = "afternoon"
 
 # Requête POST
-#postRequest(cred.token, startTime, endTime, slot)
+postRequest(cred.token, startTime, endTime, slot)
