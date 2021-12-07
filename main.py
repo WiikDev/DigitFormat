@@ -64,12 +64,10 @@ if(heure < 14):
     startTime = "09:00:00"
     endTime = "12:30:00"
     slot = "morning"
-    notification.message = "Lancement du bot du matin"
 else:
     startTime = "14:00:00"
     endTime = "17:30:00"
     slot = "afternoon"
-    notification.message = "Lancement du bot de l'après-midi"
 
 notification.send()
 
