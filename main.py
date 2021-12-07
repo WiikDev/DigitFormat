@@ -1,11 +1,9 @@
 import requests
 import datetime
 import json
+import credentials as cred
 from notifypy import Notify
 
-token = ""
-signature = ""
-idUtilisateur = ""
 
 def postRequest(token, startTime, endTime, slot):
 
@@ -38,15 +36,14 @@ def postRequest(token, startTime, endTime, slot):
             "slot" : slot,
             "start_time" : startTime
             },
-    "id" : idUtilisateur,
+    "id" : cred.idUtilisateur,
     "on_behalf" : None,
-    "signature" : signature}})
+    "signature" : cred.signature}})
     results = requests.post(url=url, data=data, headers=headers)
     if(results.status_code == 200): 
         notification.audio = "utils/yeah.wav"
         notification.message = "L'émargement a bien été signé"
     else:
-        notification.audio = "utils/cri.wav"
         notification.message = "Echec de la signature"
 
     notification.send()
@@ -55,8 +52,8 @@ def postRequest(token, startTime, endTime, slot):
 
 # DEBUT DU SCRIPT
 notification = Notify()
-notification.title = "Bot"
-notification.icon = "utils/robot.png"
+notification.title = "DigiFormat"
+notification.icon = "utils/notification.png"
 
 # Date du jour
 heure = int(str(datetime.datetime.now())[11:13])
@@ -69,4 +66,4 @@ else:
     endTime = "17:30:00"
     slot = "afternoon"
 
-postRequest(token, startTime, endTime, slot)
+postRequest(cred.token, startTime, endTime, slot)
