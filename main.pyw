@@ -39,8 +39,7 @@ def postRequest(token, startTime, endTime, slot):
     "on_behalf" : None,
     "signature" : cred.signature}})
     results = requests.post(url=url, data=data, headers=headers)
-    if(results.status_code == 200): 
-        notification.audio = "utils/yeah.wav"
+    if(results.text.find('{"sign_one_attendance":true}')  != -1): 
         notification.message = "L'émargement a bien été signé"
     else:
         notification.message = "Echec de la signature"
