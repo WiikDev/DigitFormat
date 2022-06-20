@@ -25,9 +25,9 @@ def postRequest(token, startTime, endTime, slot):
             'Referer': 'https://cefim.digiforma.net/',
             'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
             'Accept-Encoding': 'gzip, deflate',
-            'Content-Length': '22420'}
+            'Content-Length': '20561'}
     data = json.dumps({"operationName" : "sign_one_attendance",
-    "query" : "mutation sign_one_attendance($id: ID!, $date: TrainingSessionDateInput, $signature: String!, $on_behalf: ID) {\n  sign_one_attendance(id: $id, date: $date, signature: $signature, on_behalf: $on_behalf)\n}\n",
+    "query" : "mutation sign_one_attendance($id: ID!, $date: TrainingSessionDateInput!, $signature: String!, $on_behalf: ID) {\n  sign_one_attendance(id: $id, date: $date, signature: $signature, on_behalf: $on_behalf)\n}\n",
     "variables" : {
     "date" : {
             "date" : date,
@@ -38,10 +38,13 @@ def postRequest(token, startTime, endTime, slot):
     "id" : cred.idUtilisateur,
     "on_behalf" : None,
     "signature" : cred.signature}})
+
     results = requests.post(url=url, data=data, headers=headers)
+    print(results.text)
     if(results.text.find('{"sign_one_attendance":true}') != -1): 
         notification.message = "L'émargement a bien été signé"
     else:
+        notification.icon = "utils/wrong.png"
         notification.message = "Echec de la signature"
     notification.send()
 
